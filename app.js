@@ -6,10 +6,12 @@ var app = express(); // express로 생성한 application을 제어하기 위한 
 app.locals.pretty = true;
 
 // 템플릿 엔진
-app.set('view engine', 'pug'); // express와 pug 템플릿 엔진을 연결
-    // view engine == 템플릿 엔진 : 애플리케이션에서 정적 템플릿 파일 사용가능 + 런타임 시 템플릿 엔진은 템플릿 파일의 변수를 실제 값으로 바꾸고 템플릿을 클라이언트에 전송되는 HTML 파일로 변환
-    // 따라서 이 접근 방식을 사용하면 HTML 페이지를 더 쉽게 디자인할 수 있음
-app.set('views', './views'); // views : 템플릿이 있는 디렉토리를 express에게 알려줌, ./views : pug파일이 저장되어있는 디렉토리명(경로)
+app.set('view engine', 'pug'); // express와 pug(==jade) 템플릿 엔진을 연결
+    // view engine == 템플릿 엔진
+    // 1. 템플릿 엔진을 사용하면 애플리케이션에서 정적 템플릿 파일 사용 가능
+    // 2. 런타임 시 템플릿 엔진은 템플릿 파일의 변수를 실제 값으로 바꾸고 템플릿을 클라이언트에 전송되는 HTML 파일로 변환하며
+    //    이 접근 방식을 사용하면 HTML 페이지를 더 쉽게 디자인할 수 있음
+app.set('views', './views'); // views : 템플릿이 있는 디렉토리(express에게 명시), ./views : pug 파일이 저장되어있는 디렉토리명(경로)
 
 app.use(express.static('public')); // app.use(express.static('디렉토리명')) : 정적인 파일이 위치 할 디렉토리를 지정
     // localhost:포트넘버/디렉토리에저장된이미지파일명
@@ -38,9 +40,9 @@ app.get('/topic/:id', function(req, res) {
         'Express is...'
     ];
     var output = `
-    <a href="/topic?id=0">JavaScript</a><br>
-    <a href="/topic?id=1">Nodejs</a><br>
-    <a href="/topic?id=2">Express</a><br><br>
+    <a href="/topic/0">JavaScript</a><br>
+    <a href="/topic/1">Nodejs</a><br>
+    <a href="/topic/2">Express</a><br><br>
     ${topics[req.params.id]}
     `
     res.send(output);
@@ -74,9 +76,10 @@ app.get('/form_receiver',function(req, res){
 // app.use(bodyParser.json());
 
 // express.json(), express.urlencoded() 모두 페이로드로 들어오는 요청을 구문 분석하고 body-parser를 기반으로 함
-// body파싱된 데이터를 포함하는 새 객체 request 는 미들웨어 이후의 객체에 채워지거나(ie ), 파싱할 본문이 없거나, 일치하지 않거나, 오류가 발생한 경우 req.body빈 객체( )가 채워짐
+// body파싱된 데이터를 포함하는 새 객체 request는 미들웨어 이후의 객체에 채워지거나(ie ), 파싱할 본문이 없거나, 일치하지 않거나, 오류가 발생한 경우 req.body빈 객체( )가 채워짐
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // extended: true - 
+app.use(express.urlencoded({ extended: true })); // extended 는 중첩된 객체표현을 허용할지 말지를 정하는 것 (객체 안에 객체를 파싱할 수 있게하려면 true - qs 모듈을 사용)
+                                                // 설명) https://stackoverflow.com/questions/29960764/what-does-extended-mean-in-express-4-0/45690436#45690436
 app.post('/form_receiver', function(req, res){
     // console.log(req.body); 
     res.json(req.body); // post 방식으로 전달된 데이터는 req.body로 받음
@@ -110,6 +113,6 @@ app.get('/login', function(req, res){
 app.get('/route', function(req, res){
     res.send('Hello Router,<br> <img src="/3683.jpg">');
 });
-app.listen(3000, function(){
+app.listen(3000, function(){ // 포트번호 3000으로 연결
     console.log('Connected 3000 port!');
 });
