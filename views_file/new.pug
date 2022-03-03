@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 doctype html
 html 
     head
@@ -16,4 +17,24 @@ html
                 p
                     textarea(name="description") 
                 p 
+=======
+doctype html
+html 
+    head
+        meta(charset='utf-8')
+    body
+        h1
+            a(href='/topic') Server Side JavaScript
+        ul 
+            each val in topics
+                li
+                    a(href='/topic/'+val)= val
+        artcl 
+            form(action="/topic" method='post')
+                p
+                    input(type='text' name='title' placeholder='title')
+                p
+                    textarea(name="description") 
+                p 
+>>>>>>> fbbe559c19d519f30e63834d3d49e92d52170b55
                     input(type='submit')

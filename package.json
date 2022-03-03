@@ -2,7 +2,10 @@
   "dependencies": {
     "body-parser": "^1.19.1",
     "express": "^4.17.2",
+<<<<<<< HEAD
     "mysql": "^2.18.1",
+=======
+>>>>>>> fbbe559c19d519f30e63834d3d49e92d52170b55
     "pug": "^3.0.2",
     "uglify-js": "^3.15.1"
   },
